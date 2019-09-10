@@ -1,6 +1,7 @@
 package victor.training.oo.structural.proxy;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.proxy.Enhancer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -21,7 +22,7 @@ public class InterfaceProxies {
                 return method.invoke(realImpl, args);
             }
         };
-        Maths maths = (Maths) Proxy.newProxyInstance(InterfaceProxies.class.getClassLoader(),
+        Maths maths = (Maths) Proxy.newProxyInstance(Maths.class.getClassLoader(),
                 new Class<?>[]{Maths.class},
                 h);
 
