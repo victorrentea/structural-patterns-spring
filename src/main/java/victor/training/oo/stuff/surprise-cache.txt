@@ -1,0 +1,14 @@
+	@Bean
+	@Scope(value="thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
+	public CacheManager threadCaches() {
+		log.debug("Creating a new thread cache");
+		SimpleCacheManager cache = new SimpleCacheManager();
+		cache.setCaches(singleton(new ConcurrentMapCache("countries")));
+		return cache;
+	}
+	
+	@Bean
+	@Primary
+	public CacheManager mainCacheManager() {
+		return new CompositeCacheManager(threadCaches());
+	}
