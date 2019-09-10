@@ -44,6 +44,9 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.info("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
 		log.info("Folder MD5: ");
 		log.info("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+		log.info("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+		log.info("A file changes ...");
+		ops.killCache(new File("."));
 		log.info("Folder MD5: ");
 		log.info("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
