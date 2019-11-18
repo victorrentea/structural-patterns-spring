@@ -9,13 +9,13 @@ import victor.training.oo.structural.facade.infra.EmailClient;
 import victor.training.oo.structural.facade.repo.CustomerRepository;
 import victor.training.oo.structural.facade.repo.EmailRepository;
 import victor.training.oo.structural.facade.repo.SiteRepository;
+import victor.training.oo.structural.facade.service.AlertService;
 
 @Facade
 @RequiredArgsConstructor
 public class CustomerFacade {
 	private final CustomerRepository customerRepo;
-	private final EmailClient emailClient;
-	private final EmailRepository emailRepo;
+	private final AlertService alertService;
 	private final SiteRepository siteRepo;
 
 	public CustomerDto findById(long customerId) {
@@ -45,20 +45,8 @@ public class CustomerFacade {
 		customerRepo.save(customer);
 		// Heavy logic
 
-		sendRegistrationEmail(customer.getEmail());
+		alertService.sendRegistrationEmail(customer.getEmail());
 	}
 
-	private void sendRegistrationEmail(String emailAddress) {
-		System.out.println("Sending activation link via email to "+ emailAddress);
-		Email email = new Email();
-		email.setFrom("noreply");
-		email.setTo(emailAddress);
-		email.setSubject("Welcome!");
-		email.setBody("You'll like it! Sincerely, Team");
-		
-		if (!emailRepo.emailWasSentBefore(email.hashCode())) {
-			emailClient.sendEmail(email.getFrom(), email.getTo(), email.getSubject(), email.getBody());
-			emailRepo.saveSentEmail(email);
-		}
-	}
+
 }
