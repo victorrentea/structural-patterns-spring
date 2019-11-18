@@ -1,5 +1,10 @@
 package victor.training.oo.structural.proxy;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -8,20 +13,17 @@ import java.util.Arrays;
 public class LetsPlay {
 
     public static void main(String[] args) {
-        MathematicsImpl realImpl = new MathematicsImpl();
+        Mathematics realImpl = new Mathematics();
 
-        InvocationHandler h = new InvocationHandler() {
+        MethodInterceptor methodInterceptor = new MethodInterceptor() {
             @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
                 System.out.println("CIA here: You are calling : " + method.getName() +
                         " with args " + Arrays.toString(args));
                 return method.invoke(realImpl, args);
             }
         };
-
-        Mathematics m = (Mathematics) Proxy.newProxyInstance(LetsPlay.class.getClassLoader(),
-                new Class<?>[]{Mathematics.class},
-                h);
+        Mathematics m = (Mathematics) Enhancer.create(Mathematics.class, methodInterceptor);
 
         bizLogic(m);
     }
@@ -36,19 +38,10 @@ public class LetsPlay {
     }
 }
 
-
-interface Mathematics {
-    int sum(int a, int b);
-    int product(int a, int b);
-}
-class MathematicsImpl implements Mathematics {
-
-    @Override
+class Mathematics {
     public int sum(int a, int b) {
         return a + b;
     }
-
-    @Override
     public int product(int a, int b) {
         return a * b;
     }
