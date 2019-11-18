@@ -1,7 +1,6 @@
 package victor.training.oo.structural.facade.facade;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import victor.training.oo.structural.facade.Facade;
 import victor.training.oo.structural.facade.entity.Customer;
 import victor.training.oo.structural.facade.facade.dto.CustomerDto;
@@ -34,20 +33,6 @@ public class CustomerFacade {
 		registrationService.registerCustomer(customer);
 
         alertService.sendRegistrationEmail(customer.getEmail(), "Welcome!", "You'll like it! Sincerely, Team");
-    }
-
-
-    @Service
-    @RequiredArgsConstructor
-    public static class CustomerRegistrationService {
-        private final CustomerRepository customerRepo;
-
-        public void registerCustomer(Customer customer) {
-            // Heavy logic
-            // Heavy logic
-            customerRepo.save(customer);
-            // Heavy logic
-        }
     }
 
 
