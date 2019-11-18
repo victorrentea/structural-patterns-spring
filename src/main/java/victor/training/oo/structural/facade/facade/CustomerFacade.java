@@ -3,6 +3,7 @@ package victor.training.oo.structural.facade.facade;
 import lombok.RequiredArgsConstructor;
 import victor.training.oo.structural.facade.Facade;
 import victor.training.oo.structural.facade.entity.Customer;
+import victor.training.oo.structural.facade.facade.converter.CustomerConverter;
 import victor.training.oo.structural.facade.facade.dto.CustomerDto;
 import victor.training.oo.structural.facade.repo.CustomerRepository;
 import victor.training.oo.structural.facade.service.AlertService;
