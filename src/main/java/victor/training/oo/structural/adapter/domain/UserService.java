@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 // HOLY DOMAIN LOGIC. ZEN. PEACE. HARMONY
 public class UserService {
-	private final LdapUserAdapter adapter;
+	private final ILdapUserAdapter adapter;
 
 	public void importUserFromLdap(String username) {
 		List<User> list = adapter.searchByUsername(username);
