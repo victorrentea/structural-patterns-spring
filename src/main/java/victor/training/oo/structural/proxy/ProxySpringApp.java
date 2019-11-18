@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,15 +30,18 @@ public class ProxySpringApp implements CommandLineRunner {
 	// TODO [4] Spring aspect 
 	// TODO [5] Spring cache support
 	// TODO [6] Back to singleton (are you still alive?)
-	public void run(String... args) throws Exception {
-		ExpensiveOps ops = new ExpensiveOps(); 
 
+	@Autowired
+	ExpensiveOps ops;
+	public void run(String... args) throws Exception {
+
+		log.debug("Who are you ?!! " + ops.getClass());
 		log.debug("\n");
 		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 		
 		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
 		log.debug("Folder MD5: ");
