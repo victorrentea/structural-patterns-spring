@@ -5,3 +5,6 @@ import java.util.List;
 public interface ILdapUserAdapter {
     List<User> searchByUsername(String username);
 }
+
+
+
