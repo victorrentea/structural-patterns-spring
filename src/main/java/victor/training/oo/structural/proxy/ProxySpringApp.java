@@ -1,6 +1,8 @@
 package victor.training.oo.structural.proxy;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -58,12 +60,16 @@ public class ProxySpringApp implements CommandLineRunner {
 	}
 }
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
+
 @Aspect
 @Component
 @Slf4j
 class LoggingInterceptor {
 
-	@Around("execution(* victor.training..*.*(..))")
+//	@Around("execution(* victor.training..*.*(..))")
+	@Around("execution(* *(..)) && @within(victor.training.oo.structural.proxy.LoggedClass)")
 	public Object interceptAndLog(ProceedingJoinPoint point) throws Throwable {
 		log.debug("You are calling method {} with args {}",
 				point.getSignature().getName(),
