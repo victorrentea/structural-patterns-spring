@@ -22,7 +22,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@Facade
 //@LoggedClass
 public class ExpensiveOps {
 	

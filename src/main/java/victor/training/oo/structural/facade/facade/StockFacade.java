@@ -15,16 +15,9 @@ public class StockFacade {
 	private final EmailRepository emailRepo;
 
 	public void checkStock() {
-		Email email = new Email();
-		email.setFrom("noreply");
-		email.setTo("admin@myapp.com");
-		email.setSubject("Low stock!");
-		email.setBody("Buy more!");
-		
-		if (!emailRepo.emailWasSentBefore(email.hashCode())) {
-			emailClient.sendEmail(email.getFrom(), email.getTo(), email.getSubject(), email.getBody());
-			emailRepo.saveSentEmail(email);
-		}
+		// Domain Logic
+
+		// TODO same as in CustomerFacade but with other subject/body
 		
 	}
 }

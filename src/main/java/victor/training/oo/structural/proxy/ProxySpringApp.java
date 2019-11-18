@@ -17,6 +17,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @EnableCaching
@@ -65,6 +66,10 @@ public class ProxySpringApp implements CommandLineRunner {
 
 @Retention(RetentionPolicy.RUNTIME)
 @interface LoggedMethod {}
+
+@Service
+@Retention(RetentionPolicy.RUNTIME)
+@interface Facade {}
 
 @Aspect
 @Component
