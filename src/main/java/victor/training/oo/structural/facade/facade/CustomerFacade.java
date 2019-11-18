@@ -17,11 +17,7 @@ public class CustomerFacade {
 
 	public CustomerDto findById(long customerId) {
 		Customer customer = customerRepo.findById(customerId);
-		CustomerDto dto = new CustomerDto();
-		dto.name = customer.getName();
-		dto.email = customer.getEmail();
-		dto.id = customer.getId();
-		return dto;
+		return new CustomerDto(customer);
 	}
 
 	public void registerCustomer(CustomerDto dto) {
