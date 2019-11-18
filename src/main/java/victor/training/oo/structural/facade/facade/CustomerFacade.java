@@ -3,11 +3,8 @@ package victor.training.oo.structural.facade.facade;
 import lombok.RequiredArgsConstructor;
 import victor.training.oo.structural.facade.Facade;
 import victor.training.oo.structural.facade.entity.Customer;
-import victor.training.oo.structural.facade.entity.Email;
 import victor.training.oo.structural.facade.facade.dto.CustomerDto;
-import victor.training.oo.structural.facade.infra.EmailClient;
 import victor.training.oo.structural.facade.repo.CustomerRepository;
-import victor.training.oo.structural.facade.repo.EmailRepository;
 import victor.training.oo.structural.facade.repo.SiteRepository;
 import victor.training.oo.structural.facade.service.AlertService;
 
@@ -45,7 +42,7 @@ public class CustomerFacade {
 		customerRepo.save(customer);
 		// Heavy logic
 
-		alertService.sendRegistrationEmail(customer.getEmail());
+		alertService.sendRegistrationEmail(customer.getEmail(), "Welcome!", "You'll like it! Sincerely, Team");
 	}
 
 

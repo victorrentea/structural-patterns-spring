@@ -12,13 +12,13 @@ public class AlertService {
     private final EmailClient emailClient;
     private final EmailRepository emailRepo;
 
-    public void sendRegistrationEmail(String emailAddress) {
+    public void sendRegistrationEmail(String emailAddress, String subject, String body) {
         System.out.println("Sending activation link via email to "+ emailAddress);
         Email email = new Email();
         email.setFrom("noreply");
         email.setTo(emailAddress);
-        email.setSubject("Welcome!");
-        email.setBody("You'll like it! Sincerely, Team");
+        email.setSubject(subject);
+        email.setBody(body);
 
         if (!emailRepo.emailWasSentBefore(email.hashCode())) {
             emailClient.sendEmail(email.getFrom(), email.getTo(), email.getSubject(), email.getBody());
