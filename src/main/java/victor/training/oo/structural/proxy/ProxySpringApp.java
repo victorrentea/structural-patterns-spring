@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @EnableCaching
+@EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication
 public class ProxySpringApp implements CommandLineRunner {
 	public static void main(String[] args) {
@@ -54,5 +55,4 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.debug("Folder MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
-	
 }
