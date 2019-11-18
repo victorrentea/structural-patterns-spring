@@ -1,6 +1,7 @@
 package victor.training.oo.structural.facade.facade;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import victor.training.oo.structural.facade.Facade;
 import victor.training.oo.structural.facade.entity.Customer;
 import victor.training.oo.structural.facade.facade.dto.CustomerDto;
@@ -13,7 +14,7 @@ import victor.training.oo.structural.facade.service.AlertService;
 public class CustomerFacade {
 	private final CustomerRepository customerRepo;
 	private final AlertService alertService;
-	private final SiteRepository siteRepo;
+	private final CustomerConverter customerConverter;
 
 	public CustomerDto findById(long customerId) {
 		Customer customer = customerRepo.findById(customerId);
@@ -21,12 +22,12 @@ public class CustomerFacade {
 	}
 
 	public void registerCustomer(CustomerDto dto) {
-		Customer customer = convertCustomerDto(dto);
+		Customer customer = customerConverter.fromDto(dto);
 
 		if (customer.getName().trim().length() <= 5) {
 			throw new IllegalArgumentException("Name too short");
 		}
-		
+
 		if (customerRepo.customerExistsWithEmail(customer.getEmail())) {
 			throw new IllegalArgumentException("Email already registered");
 		}
@@ -38,12 +39,17 @@ public class CustomerFacade {
 		alertService.sendRegistrationEmail(customer.getEmail(), "Welcome!", "You'll like it! Sincerely, Team");
 	}
 
-	private Customer convertCustomerDto(CustomerDto dto) {
-		Customer customer = new Customer();
-		customer.setEmail(dto.email);
-		customer.setName(dto.name);
-		customer.setSite(siteRepo.getReference(dto.countryId));
-		return customer;
+	@Component
+	@RequiredArgsConstructor
+	public static class CustomerConverter {
+		private final SiteRepository siteRepo;
+		private Customer fromDto(CustomerDto dto) {
+			Customer customer = new Customer();
+			customer.setEmail(dto.email);
+			customer.setName(dto.name);
+			customer.setSite(siteRepo.getReference(dto.countryId));
+			return customer;
+		}
 	}
 
 
