@@ -21,10 +21,7 @@ public class CustomerFacade {
 	}
 
 	public void registerCustomer(CustomerDto dto) {
-		Customer customer = new Customer();
-		customer.setEmail(dto.email);
-		customer.setName(dto.name);
-		customer.setSite(siteRepo.getReference(dto.countryId));
+		Customer customer = convertCustomerDto(dto);
 
 		if (customer.getName().trim().length() <= 5) {
 			throw new IllegalArgumentException("Name too short");
@@ -39,6 +36,14 @@ public class CustomerFacade {
 		// Heavy logic
 
 		alertService.sendRegistrationEmail(customer.getEmail(), "Welcome!", "You'll like it! Sincerely, Team");
+	}
+
+	private Customer convertCustomerDto(CustomerDto dto) {
+		Customer customer = new Customer();
+		customer.setEmail(dto.email);
+		customer.setName(dto.name);
+		customer.setSite(siteRepo.getReference(dto.countryId));
+		return customer;
 	}
 
 
