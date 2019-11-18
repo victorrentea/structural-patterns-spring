@@ -32,17 +32,24 @@ public class LetsPlay {
         System.out.println(m.sum(2,0));
         System.out.println(m.sum(3,-1));
         System.out.println(m.sum(3,1));
+        System.out.println(m.product(3,2));
     }
 }
 
 
 interface Mathematics {
     int sum(int a, int b);
+    int product(int a, int b);
 }
 class MathematicsImpl implements Mathematics {
 
     @Override
     public int sum(int a, int b) {
         return a + b;
+    }
+
+    @Override
+    public int product(int a, int b) {
+        return a * b;
     }
 }
