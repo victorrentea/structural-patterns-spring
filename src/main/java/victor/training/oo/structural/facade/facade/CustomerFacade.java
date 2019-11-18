@@ -6,6 +6,7 @@ import victor.training.oo.structural.facade.entity.Customer;
 import victor.training.oo.structural.facade.facade.dto.CustomerDto;
 import victor.training.oo.structural.facade.repo.CustomerRepository;
 import victor.training.oo.structural.facade.service.AlertService;
+import victor.training.oo.structural.facade.service.CustomerRegistrationService;
 
 @Facade
 @RequiredArgsConstructor

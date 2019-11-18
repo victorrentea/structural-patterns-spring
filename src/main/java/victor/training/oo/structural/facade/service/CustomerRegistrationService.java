@@ -1,4 +1,4 @@
-package victor.training.oo.structural.facade.facade;
+package victor.training.oo.structural.facade.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
