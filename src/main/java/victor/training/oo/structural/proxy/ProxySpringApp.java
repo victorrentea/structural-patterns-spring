@@ -63,13 +63,17 @@ public class ProxySpringApp implements CommandLineRunner {
 @Retention(RetentionPolicy.RUNTIME)
 @interface LoggedClass {}
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedMethod {}
+
 @Aspect
 @Component
 @Slf4j
 class LoggingInterceptor {
 
 //	@Around("execution(* victor.training..*.*(..))")
-	@Around("execution(* *(..)) && @within(victor.training.oo.structural.proxy.LoggedClass)")
+//	@Around("execution(* *(..)) && @within(victor.training.oo.structural.proxy.LoggedClass)")
+	@Around("execution(* *(..)) && @annotation(victor.training.oo.structural.proxy.LoggedMethod)")
 	public Object interceptAndLog(ProceedingJoinPoint point) throws Throwable {
 		log.debug("You are calling method {} with args {}",
 				point.getSignature().getName(),
