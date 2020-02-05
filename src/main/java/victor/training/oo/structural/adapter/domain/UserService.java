@@ -15,7 +15,7 @@ import java.util.List;
 // ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN
 // ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN
 public class UserService {
-	private final LdapServiceAdapter ldapService;
+	private final ILdapServiceAdapter ldapService;
 
 	public void importUserFromLdap(String username) {
 		List<User> list = ldapService.searchByUsername(username);
