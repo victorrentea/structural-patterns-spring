@@ -24,12 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class ExpensiveOps {
+//@LoggedClass
+public /*final*/ class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
 	@Cacheable("primes")
-	public Boolean isPrime(int n) { 
+	@LoggedMethod
+	public /*final*/ Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
