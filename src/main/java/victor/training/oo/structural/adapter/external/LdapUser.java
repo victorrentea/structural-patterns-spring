@@ -11,10 +11,11 @@ public class LdapUser {
 	private Date creationDate;
 	private String workEmail;
 	private List<LdapUserPhone> emailAddresses = new ArrayList<>();
-	
-	public final String getuId() {
+
+	public String getuId() {
 		return uId;
 	}
+
 	public final void setuId(String uId) {
 		this.uId = uId;
 	}
