@@ -12,6 +12,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -47,15 +48,13 @@ public class ExpensiveOps {
 		return true;
 	}
 
-	@Autowired
-	private ExpensiveOps myselfProxied;
-
 	@SneakyThrows
 	@Cacheable("foldersXYZ")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})", folder);
 
 		log.debug("10000169 is prime ? ");
+		ExpensiveOps myselfProxied = (ExpensiveOps) AopContext.currentProxy();
 		log.debug("Got: " + myselfProxied.isPrime(10_000_169) + "\n");
 
 		MessageDigest md = MessageDigest.getInstance("MD5");
