@@ -1,25 +1,30 @@
 package victor.training.oo.structural.proxy;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.math.MathContext;
 import java.util.Arrays;
 
 public class StealingCalls {
     public static void main(String[] args) {
-        MathsImplem realImplem = new MathsImplem();
+        Maths realImplem = new Maths();
 
-        InvocationHandler h = new InvocationHandler() {
+
+        Callback callback = new MethodInterceptor() {
             @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
                 System.out.println("Calling method " + method.getName() +
                         " with args " + Arrays.toString(args));
                 return method.invoke(realImplem, args);
             }
         };
-        Maths proxy = (Maths) Proxy.newProxyInstance(StealingCalls.class.getClassLoader(),
-                new Class<?>[]{Maths.class},
-                h);
+        Maths proxy = (Maths) Enhancer.create(Maths.class, callback);
 
         bizLogic(proxy);
     }
@@ -32,12 +37,7 @@ public class StealingCalls {
         System.out.println(proxy.sum(3, 1));
     }
 }
-
-interface Maths {
-    int sum(int a, int b);
-}
-
-class MathsImplem implements Maths {
+class Maths {
     public int sum(int a, int b) {
         return  a + b;
     }
