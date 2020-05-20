@@ -1,29 +1,34 @@
 package victor.training.oo.structural.proxy;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
-public class InterfaceProxies {
+public class ClassProxies {
     public static void main(String[] args) {
-        MathsImplem impl = new MathsImplem();
-        InvocationHandler h = new InvocationHandler() {
+        Maths impl = new Maths();
+
+        Callback callback = new MethodInterceptor() {
             @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
                 System.out.println("Calling " + method.getName() +
                         " with args " + Arrays.toString(args));
                 return method.invoke(impl, args);
             }
         };
-        IMaths maths = (IMaths) Proxy.newProxyInstance(InterfaceProxies.class.getClassLoader(),
-                new Class<?>[]{IMaths.class},
-                h);
+        Maths maths = (Maths) Enhancer.create(Maths.class, callback);
 
         bizMethod(maths);
     }
 
-    private static void bizMethod(IMaths maths) {
+    private static void bizMethod(Maths maths) {
+        System.out.println("Who the heck am I talking to ? " + maths.getClass());
         System.out.println(maths.sum(1,1));
         System.out.println(maths.sum(2,0));
         System.out.println(maths.sum(3,-1));
@@ -31,19 +36,12 @@ public class InterfaceProxies {
         System.out.println(maths.sum(3,1));
     }
 }
-interface IMaths {
-    int sum(int a, int b);
-    int product(int a, int b);
-}
 
-class MathsImplem implements IMaths {
 
-    @Override
+class Maths {
     public int sum(int a, int b) {
         return a + b;
     }
-
-    @Override
     public int product(int a, int b) {
         return a * b;
     }
