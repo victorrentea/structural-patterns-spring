@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	private final ILdapServiceAdapter adapter;
+	private final ExternalUserServiceAdapter adapter;
 
 	public void importUserFromLdap(String username) {
 		List<User> list = adapter.searchByUsername(username);
