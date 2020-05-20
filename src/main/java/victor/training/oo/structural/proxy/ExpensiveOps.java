@@ -1,5 +1,6 @@
 package victor.training.oo.structural.proxy;
 
+import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
@@ -22,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@LoggedClass
 //@Scope(scopeName = "singleton", proxyMode = )
 public /*final*/ class ExpensiveOps {
 	
@@ -47,14 +50,25 @@ public /*final*/ class ExpensiveOps {
 		return true;
 	}
 
+//	@Transactional(propagation=REQUIRES_NEW)
+	public void doStuffInTransaction() {
+
+	}
+
+	@Autowired
+	private ExpensiveOps myselfProxied;
 
 	@Cacheable("folders")
 	@SneakyThrows
 	public /*final*/ String hashAllFiles(File folder) {
+//		for (somth) {
+//			doStuffInTransaction();
+//		}
 
 		//
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + isPrime(10000169) + "\n");
+		// injecting yourself
+		log.debug("Got: " + myselfProxied.isPrime(10000169) + "\n");
 
 		log.debug("Computing hashAllFiles({})", folder);
 		MessageDigest md = MessageDigest.getInstance("MD5");

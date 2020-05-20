@@ -3,9 +3,14 @@ package victor.training.oo.structural.proxy;
 import static java.util.Arrays.asList;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +19,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @EnableCaching
@@ -56,5 +62,21 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.debug("Folder MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
-	
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {
+
+}
+
+@Component
+@Aspect
+@Slf4j
+class LoggingInterceptor {
+
+	@Around("execution(* *(..)) && @within(victor.training.oo.structural.proxy.LoggedClass)")
+	public Object logCall(ProceedingJoinPoint point) throws Throwable {
+		log.debug("Calling method {}",point.getSignature().getName());
+		return point.proceed();
+	}
 }
