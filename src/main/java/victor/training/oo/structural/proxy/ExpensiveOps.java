@@ -12,17 +12,22 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ExpensiveOps {
+@Service
+//@Scope(scopeName = "singleton", proxyMode = )
+public /*final*/ class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
+
+	@Cacheable("primes")
 	public Boolean isPrime(int n) { 
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
@@ -42,8 +47,15 @@ public class ExpensiveOps {
 		return true;
 	}
 
+
+	@Cacheable("folders")
 	@SneakyThrows
-	public String hashAllFiles(File folder) {
+	public /*final*/ String hashAllFiles(File folder) {
+
+		//
+		log.debug("10000169 is prime ? ");
+		log.debug("Got: " + isPrime(10000169) + "\n");
+
 		log.debug("Computing hashAllFiles({})", folder);
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		for (int i = 0; i < 3; i++) { // pretend there is much more work to do here
@@ -56,5 +68,9 @@ public class ExpensiveOps {
 		byte[] digest = md.digest();
 	    return DatatypeConverter.printHexBinary(digest).toUpperCase();
 	}
-	
+
+	@CacheEvict("folders")
+	public void killTheFolderCache(File folder) {
+		// EMPTY METHOD: DO NOT DELETE. LET THE MAGIC HAPPEN
+	}
 }

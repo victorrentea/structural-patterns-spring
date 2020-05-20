@@ -24,6 +24,10 @@ public class ClassProxies {
         };
         Maths maths = (Maths) Enhancer.create(Maths.class, callback);
 
+        maths = new Maths() {
+//            @Override
+//            private void x() {}
+        };
         bizMethod(maths);
     }
 
@@ -37,11 +41,11 @@ public class ClassProxies {
     }
 }
 
-
 class Maths {
     public int sum(int a, int b) {
         return a + b;
     }
+//    private void x() {}
     public int product(int a, int b) {
         return a * b;
     }
