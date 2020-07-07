@@ -19,6 +19,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 public class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
