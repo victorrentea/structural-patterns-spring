@@ -2,6 +2,7 @@ package victor.training.oo.structural.adapter.domain;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	private final ILdapServiceAdapter ldapServiceAdapter;
+	private ILdapServiceAdapter ldapServiceAdapter;
+
 
 	public void importUserFromLdap(String username) {
 		List<User> list = ldapServiceAdapter.searchByUsername(username);
