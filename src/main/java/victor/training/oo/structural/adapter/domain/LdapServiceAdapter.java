@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class LdapServiceAdapter {
+public class LdapServiceAdapter implements ILdapServiceAdapter {
    private final LdapUserWebserviceClient wsClient;
 
    private User convert(LdapUser ldapUser) {
@@ -22,6 +22,7 @@ public class LdapServiceAdapter {
       return ldapUser.getfName() + " " + ldapUser.getlName().toUpperCase();
    }
 
+   @Override
    public List<User> searchByUsername(String username) {
       return wsClient.search(username.toUpperCase(), null, null).stream()
          .map(this::convert)
