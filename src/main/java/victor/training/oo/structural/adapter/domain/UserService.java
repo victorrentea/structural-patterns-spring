@@ -1,25 +1,20 @@
 package victor.training.oo.structural.adapter.domain;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import victor.training.oo.structural.adapter.external.LdapUser;
 import victor.training.oo.structural.adapter.external.LdapUserWebserviceClient;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
-	private final LdapUserWebserviceClient wsClient;
-
-	public UserService(LdapUserWebserviceClient wsClient) {
-		this.wsClient = wsClient;
-	}
+	private final LdapServiceAdapter ldapServiceAdapter;
 
 	public void importUserFromLdap(String username) {
-		List<User> list = searchByUsername(username);
+		List<User> list = ldapServiceAdapter.searchByUsername(username);
 		if (list.size() != 1) {
 			throw new IllegalArgumentException("There is no single user matching username " + username);
 		}
@@ -30,27 +25,12 @@ public class UserService {
 		}
 		log.debug("Insert user in my database");
 	}
-	
+
 	public List<User> searchUserInLdap(String username) {
-		return searchByUsername(username);
+		return ldapServiceAdapter.searchByUsername(username);
 	}
 	// ZEN GARDEN. PEACE. YING and YANG
 	/// ----------------line-------------------------------------------------------------
 	// Beware. You that enter, give up your pride.
-
-	private User convert(LdapUser ldapUser) {
-		String fullName = extractFullName(ldapUser);
-		return new User(ldapUser.getuId(), fullName, ldapUser.getWorkEmail());
-	}
-
-	private String extractFullName(LdapUser ldapUser) {
-		return ldapUser.getfName() + " " + ldapUser.getlName().toUpperCase();
-	}
-
-	private List<User> searchByUsername(String username) {
-		return wsClient.search(username.toUpperCase(), null, null).stream()
-			.map(this::convert)
-			.collect(Collectors.toList());
-	}
 
 }
