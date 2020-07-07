@@ -21,6 +21,15 @@ public class ProxyByHand {
 
       Math math = (Math) Enhancer.create(Math.class, callback);
 
+      // pretty much ~~ to
+//      Math math = new Math(){
+//         @Override
+//         Integer sum(int a, int b) {
+//            System.out.println("Calling method " + method.getName() + " with args " + Arrays.toString(objects));
+//            return super.sum(a, b);
+//         }
+//      };
+
       bizMethod(math);
    }
 
