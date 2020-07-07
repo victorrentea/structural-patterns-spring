@@ -2,8 +2,8 @@ package victor.training.oo.structural.adapter.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import victor.training.oo.structural.adapter.external.LdapUser;
-import victor.training.oo.structural.adapter.external.LdapUserWebserviceClient;
+import victor.training.oo.structural.adapter.infra.LdapUser;
+import victor.training.oo.structural.adapter.infra.LdapUserWebserviceClient;
 
 import java.util.List;
 import java.util.stream.Collectors;

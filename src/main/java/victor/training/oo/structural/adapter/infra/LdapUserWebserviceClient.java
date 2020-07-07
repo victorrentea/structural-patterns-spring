@@ -1,4 +1,4 @@
-package victor.training.oo.structural.adapter.external;
+package victor.training.oo.structural.adapter.infra;
 
 import java.util.Arrays;
 import java.util.List;

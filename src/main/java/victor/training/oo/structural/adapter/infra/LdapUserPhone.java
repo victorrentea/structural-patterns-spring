@@ -1,4 +1,4 @@
-package victor.training.oo.structural.adapter.external;
+package victor.training.oo.structural.adapter.infra;
 
 public class LdapUserPhone {
 	private String type;
