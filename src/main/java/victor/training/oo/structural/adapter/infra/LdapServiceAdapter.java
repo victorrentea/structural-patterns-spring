@@ -1,7 +1,9 @@
-package victor.training.oo.structural.adapter.domain;
+package victor.training.oo.structural.adapter.infra;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import victor.training.oo.structural.adapter.domain.ILdapServiceAdapter;
+import victor.training.oo.structural.adapter.domain.User;
 import victor.training.oo.structural.adapter.infra.LdapUser;
 import victor.training.oo.structural.adapter.infra.LdapUserWebserviceClient;
 
