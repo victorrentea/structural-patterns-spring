@@ -22,7 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
+
+	@Cacheable("primes")
 	public Boolean isPrime(int n) { 
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
