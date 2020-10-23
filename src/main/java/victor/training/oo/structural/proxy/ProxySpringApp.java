@@ -3,9 +3,17 @@ package victor.training.oo.structural.proxy;
 import static java.util.Arrays.asList;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +22,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @EnableCaching
@@ -42,7 +52,6 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 
-
 		ops.anotherMethod();
 		
 //		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
@@ -51,5 +60,31 @@ public class ProxySpringApp implements CommandLineRunner {
 //		log.debug("Folder MD5: ");
 //		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
-	
+}
+
+@Service
+@Retention(RetentionPolicy.RUNTIME)
+@interface Facade{
+
+}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
+
+@Aspect
+@Component
+class LoggingInterceptor {
+	private static final Logger log = LoggerFactory.getLogger(LoggingInterceptor.class);
+
+//	@Around("execution(* victor..*.*(..))") // too magic. People need to know that **THAT** package is special
+//	@Around("execution(* victor..*.*(..)) && @within(victor.training.oo.structural.proxy.LoggedClass)")
+	@Around("execution(* victor..*.*(..)) && @within(victor.training.oo.structural.proxy.Facade)")
+	public Object logExecution(ProceedingJoinPoint pjp) throws Throwable {
+		log.info("Calling method {} with args: {}", pjp.getSignature().getName(), Arrays.asList(pjp.getArgs()));
+		long t0 = System.currentTimeMillis();
+		// call the real method
+		Object result = pjp.proceed();
+		long t1 = System.currentTimeMillis();
+		log.info("Execution took: {}", t1 - t0);
+		return result;
+	}
 }

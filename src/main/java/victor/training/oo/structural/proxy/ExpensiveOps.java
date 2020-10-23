@@ -17,14 +17,16 @@ import org.springframework.stereotype.Component;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
+
 @Slf4j
+@Facade
 public /*final*/ class ExpensiveOps { // deployment failed
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
 	@Cacheable("primes")
 	public /*final*/ Boolean isPrime(int n) { // silently fails to proxy the method
+//		new RuntimeException("on purpose").printStackTrace();
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
