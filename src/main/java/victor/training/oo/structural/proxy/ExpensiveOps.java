@@ -1,29 +1,30 @@
 package victor.training.oo.structural.proxy;
 
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+@Component
 @Slf4j
-public class ExpensiveOps {
+public /*final*/ class ExpensiveOps { // deployment failed
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
-	public Boolean isPrime(int n) { 
+
+	@Cacheable("primes")
+	public /*final*/ Boolean isPrime(int n) { // silently fails to proxy the method
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -41,6 +42,13 @@ public class ExpensiveOps {
 		}
 		return true;
 	}
+	@Autowired
+	private ExpensiveOps myselfProxied;
+
+	public void anotherMethod() {
+		log.debug("10000169 is prime ? ");
+		log.debug("Got: " + myselfProxied.isPrime(10000169) + "\n");
+	}
 
 	@SneakyThrows
 	public String hashAllFiles(File folder) {
@@ -56,5 +64,5 @@ public class ExpensiveOps {
 		byte[] digest = md.digest();
 	    return DatatypeConverter.printHexBinary(digest).toUpperCase();
 	}
-	
+
 }
