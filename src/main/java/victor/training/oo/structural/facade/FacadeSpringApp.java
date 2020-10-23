@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import victor.training.oo.structural.facade.facade.CustomerFacade;
-import victor.training.oo.structural.facade.facade.dto.CustomerDto;
 
 @SpringBootApplication
 public class FacadeSpringApp implements CommandLineRunner{
@@ -18,6 +16,6 @@ public class FacadeSpringApp implements CommandLineRunner{
 	
 	public void run(String... args) throws Exception {
 		// pretend you are in a @RestController here
-		customerFacade.registerCustomer(new CustomerDto("John Doe", "john.doe@pentagon.us"));
+		customerFacade.registerCustomer(new victor.training.patterns.structural.facade.facade.dto.CustomerDto("John Doe", "john.doe@pentagon.us"));
 	}
 }
