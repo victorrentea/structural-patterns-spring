@@ -2,7 +2,7 @@ package victor.training.oo.structural.adapter.infra;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import victor.training.oo.structural.adapter.domain.ILdapUserWebServiceAdapter;
+import victor.training.oo.structural.adapter.domain.ExternalUserService;
 import victor.training.oo.structural.adapter.domain.User;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 // you who enter, abandon all hope
 @Component
 @RequiredArgsConstructor
-public class LdapUserWebServiceAdapter implements ILdapUserWebServiceAdapter {
+public class LdapUserWebServiceAdapter implements ExternalUserService {
    private final LdapUserWebserviceClient wsClient;
 
    @Override
