@@ -2,6 +2,10 @@ package victor.training.oo.structural.proxy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -11,22 +15,29 @@ import java.util.Arrays;
 public class ProxyMagic {
    private static final Logger log = LoggerFactory.getLogger(ProxyMagic.class);
    public static void main(String[] args) {
-      MathsImpl realImplem = new MathsImpl();
-      InvocationHandler h = new InvocationHandler() {
+      Maths real = new Maths();
+
+      Callback callback = new MethodInterceptor() {
          @Override
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+         public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
             log.info("Calling method {} with args {}", method.getName(), Arrays.toString(args));
-            return method.invoke(realImplem, args);
+            return method.invoke(real, args);
          }
       };
+      Maths maths = (Maths) Enhancer.create(Maths.class, callback);
 
-      Maths maths = (Maths) Proxy.newProxyInstance(ProxyMagic.class.getClassLoader(),
-          new Class<?>[]{Maths.class}, h);
+//      maths = new Maths() {
+//         @Override
+//         public int sum(int a, int b) {
+//            return super.sum(a, b);
+//         }
+//      };
 
       bizMethod(maths);
    }
 
    private static void bizMethod(Maths maths) {
+      System.out.println("Who am I calling ? " + maths.getClass());
       System.out.println(maths.sum(1, 1));
       System.out.println(maths.sum(2, 0));
       System.out.println(maths.sum(3, -1));
@@ -36,17 +47,11 @@ public class ProxyMagic {
    }
 }
 
-class MathsImpl implements  Maths{
+class Maths {
    public int sum(int a, int b) {
       return a+b;
    }
    public int product(int a, int b) {
       return a*b;
    }
-}
-
-
-interface Maths {
-   int sum (int a, int b);
-   int product (int a, int b);
 }
