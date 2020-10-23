@@ -19,6 +19,7 @@ import java.util.List;
 public class UserService {
 	private final LdapUserWebServiceAdapter adapter;
 
+
 	public void importUserFromLdap(String username) {
 		List<User> list = adapter.searchByUsername(username);
 		if (list.size() != 1) {

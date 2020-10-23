@@ -1,5 +1,6 @@
 package victor.training.oo.structural.adapter.domain;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import victor.training.oo.structural.adapter.external.LdapUser;
@@ -13,9 +14,9 @@ import static java.util.stream.Collectors.toList;
 // ============= a line ======================================================
 // you who enter, abandon all hope
 @Component
+@RequiredArgsConstructor
 public class LdapUserWebServiceAdapter {
-   @Autowired
-   private LdapUserWebserviceClient wsClient;
+   private final LdapUserWebserviceClient wsClient;
 
    public List<User> searchByUsername(String username) {
       return wsClient.search(username.toUpperCase(), null, null)
