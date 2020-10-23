@@ -17,7 +17,7 @@ import java.util.List;
 // ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN ZEN
 @RequiredArgsConstructor
 public class UserService {
-	private final LdapUserWebServiceAdapter adapter;
+	private final ILdapUserWebServiceAdapter adapter;
 
 
 	public void importUserFromLdap(String username) {
