@@ -1,7 +1,6 @@
 package victor.training.oo.structural.facade.repo;
 
 import org.springframework.stereotype.Repository;
-
 import victor.training.oo.structural.facade.entity.Email;
 
 @Repository
