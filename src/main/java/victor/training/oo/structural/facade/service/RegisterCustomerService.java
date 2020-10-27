@@ -7,7 +7,7 @@ import victor.training.oo.structural.facade.repo.CustomerRepository;
 
 @RequiredArgsConstructor
 @Service
-public class CustomerService {
+public class RegisterCustomerService {
    private final CustomerRepository customerRepo;
 
    public void registerCustomer(Customer customer) {

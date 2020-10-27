@@ -4,20 +4,16 @@ import lombok.RequiredArgsConstructor;
 import victor.training.oo.structural.facade.Facade;
 import victor.training.oo.structural.facade.entity.Customer;
 import victor.training.oo.structural.facade.facade.dto.CustomerDto;
-import victor.training.oo.structural.facade.infra.EmailClient;
 import victor.training.oo.structural.facade.repo.CustomerRepository;
-import victor.training.oo.structural.facade.repo.EmailRepository;
-import victor.training.oo.structural.facade.service.CustomerService;
+import victor.training.oo.structural.facade.service.RegisterCustomerService;
 import victor.training.oo.structural.facade.service.EmailService;
 
 @Facade
 @RequiredArgsConstructor
 public class CustomerFacade {
 	private final CustomerRepository customerRepo;
-	private final EmailClient emailClient;
-	private final EmailRepository emailRepo;
 	private final CustomerMapper customerMapper;
-	private final CustomerService customerService;
+	private final RegisterCustomerService customerService;
 	private final EmailService emailService;
 
 	public CustomerDto findById(long customerId) {
@@ -41,6 +37,6 @@ public class CustomerFacade {
 		emailService.sendEmail(customer.getEmail(),
 			"Welcome!", "You'll like it! Sincerely, Team");
 	}
-
+//1000K big problem
 
 }
