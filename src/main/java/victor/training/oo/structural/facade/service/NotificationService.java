@@ -1,6 +1,7 @@
 package victor.training.oo.structural.facade.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import victor.training.oo.structural.facade.entity.Email;
 import victor.training.oo.structural.facade.infra.EmailClient;
@@ -9,8 +10,9 @@ import victor.training.oo.structural.facade.repo.EmailRepository;
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
-   private final EmailClient emailClient;
-   private final EmailRepository emailRepo;
+   private EmailClient emailClient;
+   private EmailRepository emailRepo;
+
 
    public void sendRegistrationEmail(String emailAddress, String subject, String body) {
       System.out.println("Sending activation link via email to " + emailAddress);
