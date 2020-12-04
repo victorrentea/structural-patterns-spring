@@ -19,12 +19,18 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 public class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
-	public Boolean isPrime(int n) { 
+
+	@Cacheable("primes") // imagine that somewhere, in a cave, there;s a map
+	// Map<Integer, Boolean> primes = new HashMap<>();
+	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})", n);
+
+//		new RuntimeException().printStackTrace();
+
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -42,6 +48,11 @@ public class ExpensiveOps {
 		return true;
 	}
 
+	public void methodInTheSameClass() {
+		log.debug("10000169 is prime ? ");
+		log.debug("Got: " + isPrime(10_000_169) + "\n");
+	}
+
 	@SneakyThrows
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})", folder);
@@ -56,5 +67,4 @@ public class ExpensiveOps {
 		byte[] digest = md.digest();
 	    return DatatypeConverter.printHexBinary(digest).toUpperCase();
 	}
-	
 }
