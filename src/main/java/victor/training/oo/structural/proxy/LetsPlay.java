@@ -36,9 +36,9 @@ public class LetsPlay {
    }
 }
 
+/*final*/ class Maths {
 
-class Maths {
-   public int sum(int a, int b) {
+   /*final - carefuL !*/ public int sum(int a, int b) {
       return a + b;
    }
    public int multiply(int a, int b) {
