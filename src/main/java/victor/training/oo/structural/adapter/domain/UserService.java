@@ -3,7 +3,6 @@ package victor.training.oo.structural.adapter.domain;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import victor.training.oo.structural.adapter.external.LdapUserWebserviceClient;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
 // Domain Service
 // PEace, harmony, ZEN
 public class UserService {
-	private final Adapter adapter;
+	private final ExternalUserService adapter;
 
 	public void importUserFromLdap(String username) {
 		List<User> list = adapter.searchByUsername(username);
