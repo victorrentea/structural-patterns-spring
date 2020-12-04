@@ -1,5 +1,10 @@
 package victor.training.oo.structural.proxy;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -10,38 +15,32 @@ public class LetsPlay {
       Maths realStuff = new Maths();
 
 
-      InvocationHandler h = new InvocationHandler() {
+      Callback callback = new MethodInterceptor() {
          @Override
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+         public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
             System.out.println("Calling method " + method.getName() + " with args  " + Arrays.toString(args));
             return method.invoke(realStuff, args);
          }
       };
 
-      IMaths maths = (IMaths) Proxy.newProxyInstance(LetsPlay.class.getClassLoader(),
-          new Class<?>[]{IMaths.class}, h);
+      Maths maths = (Maths) Enhancer.create(Maths.class, callback);
 
       method(maths);
    }
 
-   public static void method(IMaths maths) {
+   public static void method(Maths maths) {
+      System.out.println(maths.getClass());
       System.out.println(maths.sum(1,1));
       System.out.println(maths.sum(1,2));
       System.out.println(maths.multiply(1,2));
    }
 }
 
-interface IMaths {
-   int sum(int a, int b);
 
-   int multiply(int a, int b);
-}
-
-class Maths implements IMaths {
+class Maths {
    public int sum(int a, int b) {
       return a + b;
    }
-   @Override
    public int multiply(int a, int b) {
       return a * b;
    }
