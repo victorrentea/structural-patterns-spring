@@ -3,10 +3,16 @@ package victor.training.oo.structural.proxy;
 import static java.util.Arrays.asList;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +20,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @EnableCaching
@@ -42,7 +49,27 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 
-		ops.methodInTheSameClass();
+//		ops.methodInTheSameClass();
 	}
 	
+}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {
+
+}
+
+@Slf4j
+@Component
+@Aspect
+class LoggingAspect {
+
+	@Around("execution(* *(..)) && @within(victor.training.oo.structural.proxy.LoggedClass)")
+	public Object method(ProceedingJoinPoint pjp) throws Throwable {
+		log.info("Calling method " + pjp.getSignature().getName() + " with args " + Arrays.toString(pjp.getArgs()));
+		long t0 = System.currentTimeMillis();
+		Object result = pjp.proceed();
+		long t1 = System.currentTimeMillis();
+		log.info("Took {}", t1-t0);
+		return result;
+	}
 }

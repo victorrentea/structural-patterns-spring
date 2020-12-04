@@ -20,16 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@LoggedClass
 public class ExpensiveOps {
+
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
+//	@Transactional
 	@Cacheable("primes") // imagine that somewhere, in a cave, there;s a map
 	// Map<Integer, Boolean> primes = new HashMap<>();
 	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})", n);
 
-//		new RuntimeException().printStackTrace();
+		new RuntimeException().printStackTrace();
 
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -53,18 +56,4 @@ public class ExpensiveOps {
 		log.debug("Got: " + isPrime(10_000_169) + "\n");
 	}
 
-	@SneakyThrows
-	public String hashAllFiles(File folder) {
-		log.debug("Computing hashAllFiles({})", folder);
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		for (int i = 0; i < 3; i++) { // pretend there is much more work to do here
-			Files.walk(folder.toPath())
-				.map(Path::toFile)
-				.filter(File::isFile)
-				.map(Unchecked.function(FileUtils::readFileToString))
-				.forEach(s -> md.update(s.getBytes()));
-		}
-		byte[] digest = md.digest();
-	    return DatatypeConverter.printHexBinary(digest).toUpperCase();
-	}
 }
