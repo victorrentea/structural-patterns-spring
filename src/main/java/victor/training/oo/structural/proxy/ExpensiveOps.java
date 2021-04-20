@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 
 @Slf4j
 @Service
@@ -33,10 +36,11 @@ public class ExpensiveOps {
 //	@Transactional
 //	@PreAuthorize
 //	@Async
+//	@Valid
 //	@Retryable
 //@Transactional(REQUIRES_NEW)
 	@Cacheable("primes")
-	public Boolean isPrime(int n) {
+	public Boolean isPrime(@Valid @Positive int n) {
 //		new RuntimeException().printStackTrace();
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);

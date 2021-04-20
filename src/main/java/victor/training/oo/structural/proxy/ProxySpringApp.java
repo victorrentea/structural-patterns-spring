@@ -39,7 +39,7 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.debug("\n");
 		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(-10000169) + "\n");
 //		ThreadUtils.sleep(2000);
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
