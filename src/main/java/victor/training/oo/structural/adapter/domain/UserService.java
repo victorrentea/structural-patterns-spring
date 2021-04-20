@@ -19,10 +19,10 @@ import static java.util.stream.Collectors.*;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	private final LdapUserWebserviceClient wsClient;
+	private final LdapServiceAdapter adapter;
 
 	public void importUserFromLdap(String username) {
-		List<User> list = searchByUsername(username);
+		List<User> list = adapter.searchByUsername(username);
 		if (list.size() != 1) {
 			throw new IllegalArgumentException("There is no single user matching username " + username);
 		}
@@ -35,19 +35,9 @@ public class UserService {
 	}
 	
 	public List<User> searchUserInLdap(String username) {
-		return searchByUsername(username);
+		return adapter.searchByUsername(username);
 	}
 
 	// ====================================== Garbage only bellow the line =====================================
-
-	private User convert(LdapUser ldapUser) {
-		String fullName = ldapUser.getfName() + " " + ldapUser.getlName().toUpperCase();
-		return new User(ldapUser.getuId(), fullName, ldapUser.getWorkEmail());
-	}
-
-	private List<User> searchByUsername(String username) {
-		return wsClient.search(username.toUpperCase(), null, null)
-			.stream().map(this::convert).collect(toList());
-	}
 
 }
