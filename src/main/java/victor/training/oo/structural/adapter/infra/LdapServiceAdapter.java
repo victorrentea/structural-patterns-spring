@@ -1,17 +1,18 @@
-package victor.training.oo.structural.adapter.domain;
+package victor.training.oo.structural.adapter.infra;
 
 import lombok.RequiredArgsConstructor;
-import victor.training.oo.structural.adapter.infra.LdapUser;
-import victor.training.oo.structural.adapter.infra.LdapUserWebserviceClient;
+import victor.training.oo.structural.adapter.domain.ExternalUserService;
+import victor.training.oo.structural.adapter.domain.User;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
-public class LdapServiceAdapter {
+public class LdapServiceAdapter implements ExternalUserService {
    private final LdapUserWebserviceClient wsClient;
 
+   @Override
    public List<User> searchByUsername(String username) {
       return wsClient.search(username.toUpperCase(), null, null)
           .stream().map(this::convert).collect(toList());
