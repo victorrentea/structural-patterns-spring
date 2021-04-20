@@ -12,18 +12,32 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 public class ExpensiveOps {
-	
+
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
-	public Boolean isPrime(int n) { 
+
+	@Autowired
+	ExpensiveOps myselfProxied; // WTHACK?
+
+//	@Transactional
+//	@PreAuthorize
+//	@Async
+//	@Retryable
+//@Transactional(REQUIRES_NEW)
+	@Cacheable("primes")
+	public Boolean isPrime(int n) {
+//		new RuntimeException().printStackTrace();
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -32,7 +46,7 @@ public class ExpensiveOps {
 		if (number.remainder(TWO).equals(BigDecimal.ZERO)) {
 			return false;
 		}
-		for (BigDecimal divisor = new BigDecimal("3"); 
+		for (BigDecimal divisor = new BigDecimal("3");
 			divisor.compareTo(number.divide(TWO)) < 0;
 			divisor = divisor.add(TWO)) {
 			if (number.remainder(divisor).equals(BigDecimal.ZERO)) {
@@ -42,8 +56,12 @@ public class ExpensiveOps {
 		return true;
 	}
 
+	@Cacheable("folder-cache")
 	@SneakyThrows
 	public String hashAllFiles(File folder) {
+
+		log.debug("Got: " + isPrime(10000169) + "\n");
+
 		log.debug("Computing hashAllFiles({})", folder);
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		for (int i = 0; i < 3; i++) { // pretend there is much more work to do here
@@ -56,5 +74,9 @@ public class ExpensiveOps {
 		byte[] digest = md.digest();
 	    return DatatypeConverter.printHexBinary(digest).toUpperCase();
 	}
-	
+
+	@CacheEvict("folder-cache")
+	public void killFolderCache(File file) {
+		// EMPTY. DO NOT DELETE. LET THE MAGIC HAPPEN.
+	}
 }
